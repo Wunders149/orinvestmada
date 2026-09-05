@@ -18,7 +18,9 @@ const router = Router();
 const FIELD_MAP = {
   imageSlot: 'image_slot',
   categoryId: 'image_slot',
-  groupType: 'group_type'
+  groupType: 'group_type',
+  mediaType: 'media_type',
+  mediaUrl: 'media_url'
 };
 
 function mapFields(body, direction = 'toDb') {
