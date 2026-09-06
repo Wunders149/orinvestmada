@@ -1307,12 +1307,50 @@ async function loadProducts() {
         if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
       });
     });
+    initProductsCarousel();
     initImageReveal();
   } catch (err) {
     console.warn('Products load error:', err);
     const grid = document.getElementById('productsGrid');
     if (grid) grid.innerHTML = '<p class="empty-state-inline">Impossible de charger les produits.</p>';
   }
+}
+
+function initProductsCarousel() {
+  const grid = document.getElementById('productsGrid');
+  const carousel = grid?.closest('.products-carousel');
+  const previousButton = carousel?.querySelector('.products-carousel-prev');
+  const nextButton = carousel?.querySelector('.products-carousel-next');
+  if (!grid || !carousel || !previousButton || !nextButton) return;
+
+  const cards = [...grid.querySelectorAll('.product-card')];
+  if (cards.length < 2) {
+    carousel.classList.add('is-static');
+    return;
+  }
+
+  const getScrollAmount = () => {
+    const card = cards[0];
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  previousButton.addEventListener('click', () => {
+    grid.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+  });
+  nextButton.addEventListener('click', () => {
+    grid.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+  });
+
+  const updateButtons = () => {
+    const maxScroll = grid.scrollWidth - grid.clientWidth - 1;
+    previousButton.disabled = grid.scrollLeft <= 1;
+    nextButton.disabled = grid.scrollLeft >= maxScroll;
+  };
+
+  grid.addEventListener('scroll', updateButtons, { passive: true });
+  window.addEventListener('resize', updateButtons);
+  updateButtons();
 }
 
 function openProductLightbox(src, mediaType, name) {

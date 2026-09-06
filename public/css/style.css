@@ -1167,12 +1167,53 @@ h2 {
     radial-gradient(circle at top left, rgba(192, 120, 35, 0.15), transparent 35%),
     var(--bg-primary);
 }
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+.products-carousel {
+  position: relative;
   margin-top: 60px;
 }
+.products-grid {
+  display: grid;
+  grid-auto-columns: minmax(280px, 360px);
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 0 4px 18px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rust) transparent;
+}
+.products-grid::-webkit-scrollbar { height: 6px; }
+.products-grid::-webkit-scrollbar-track { background: transparent; }
+.products-grid::-webkit-scrollbar-thumb { background: var(--rust); border-radius: 6px; }
+.product-card { scroll-snap-align: start; }
+.products-carousel-btn {
+  position: absolute;
+  z-index: 3;
+  top: 42%;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(236, 184, 102, 0.7);
+  border-radius: 50%;
+  background: rgba(20, 18, 15, 0.9);
+  color: #fff4df;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.products-carousel-btn:hover:not(:disabled) {
+  background: var(--rust);
+  transform: translateY(-50%) scale(1.06);
+}
+.products-carousel-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.products-carousel-prev { left: -20px; }
+.products-carousel-next { right: -20px; }
+.products-carousel.is-static .products-carousel-btn { display: none; }
 .product-card {
   display: flex;
   flex-direction: column;
@@ -3754,7 +3795,7 @@ h1 { animation-delay: 0.2s; }
   #about { grid-template-columns: 1fr; gap: 48px; }
   #vision-mission { padding: 80px 30px; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .products-grid { grid-auto-columns: minmax(300px, 46vw); }
   .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .project-card:first-child { grid-column: span 2; }
@@ -3792,7 +3833,10 @@ h1 { animation-delay: 0.2s; }
   .vm-text { font-size: 1.2rem; }
   .vm-card { padding: 36px 28px; }
   .services-grid { grid-template-columns: 1fr; }
-  .products-grid { grid-template-columns: 1fr; }
+  .products-grid { grid-auto-columns: minmax(260px, 86vw); }
+  .products-carousel-btn { width: 36px; height: 36px; font-size: 1.7rem; }
+  .products-carousel-prev { left: -10px; }
+  .products-carousel-next { right: -10px; }
   .projects-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: 1fr; }
